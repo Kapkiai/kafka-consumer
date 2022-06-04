@@ -1,0 +1,62 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: kafka-client
+  name: kafka-client
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kafka-client
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: kafka-client
+    spec:
+      serviceAccountName: bigdata
+      containers:
+      - image: kapkiai/kafka-consumer:1.0.0
+        name: kafka
+        command: 
+        - sh
+        - -c 
+        - java -jar /kafka-client.jar --spring.config.location=/tmp/application.properties
+        resources: 
+          requests:
+            memory: "64Mi"
+            cpu: "250m"
+          limits:
+            memory: "1Gi"
+            cpu: "1000m"
+        volumeMounts:
+        - mountPath: /tmp/application.properties
+          name: kafka-config
+          subPath: application.properties
+      volumes: 
+        - name: kafka-config
+          configMap:
+            name: kafka-configs
+            items: 
+            - key: application.properties
+              path: application.properties
+        
+---
+apiVersion: v1
+data:
+  application.properties: |-
+    #kafka configuration
+    spring.kafka.consumer.bootstrap-servers = 10.3.41.32:9094
+    spring.kafka.consumer.auto-offset-reset = earliest
+    spring.kafka.consumer.group-id = my-group
+    spring.kafka.properties.security.protocol=SASL_PLAINTEXT
+    spring.kafka.properties.sasl.mechanism=SCRAM-SHA-512
+    spring.kafka.properties.sasl.jaas.config=org.apache.kafka.common.security.scram.ScramLoginModule required username="bigdata" password="rMnPG4f7bDzB";
+    spring.kafka.consumer.key-deserializer = org.apache.kafka.common.serialization.StringDeserializer
+    spring.kafka.consumer.value-deserializer = org.apache.kafka.common.serialization.StringDeserializer
+    kafka-topic = my-test-topic
+    # dataops
+kind: ConfigMap
+metadata:
+  name: kafka-configs
