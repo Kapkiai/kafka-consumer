@@ -1,4 +1,4 @@
-package com.safaricom.bigdata.kafka;
+package com.kapkiai.bigdata.kafka;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

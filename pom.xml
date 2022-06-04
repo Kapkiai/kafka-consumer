@@ -8,7 +8,7 @@
 		<version>2.6.1</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.safaricom.bigdata.kafka</groupId>
+	<groupId>com.kapkiai.bigdata.kafka</groupId>
 	<artifactId>kafka-client</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>kafka-client</name>

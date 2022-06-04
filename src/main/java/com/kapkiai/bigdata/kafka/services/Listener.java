@@ -1,4 +1,4 @@
-package com.safaricom.bigdata.kafka.services;
+package com.kapkiai.bigdata.kafka.services;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
