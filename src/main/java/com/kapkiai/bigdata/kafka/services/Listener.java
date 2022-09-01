@@ -13,8 +13,10 @@ public class Listener {
     private static final Logger log = LogManager.getLogger(Listener.class);
 
     int count = new AtomicInteger().incrementAndGet();
+    // @KafkaListener(topics = "${kafka-topic}")
 
-    @KafkaListener(topics = "${kafka-topic}")
+
+    @KafkaListener(topics = "#{'${kafka-topic}'.split(',')}")
     public void consume(ConsumerRecord<String, String> record){
 
         log.info("Message received -> Timestamp: {}, key: {}, Value: {}, Record Count: {}", new Object[]{record.timestamp(), record.key(), record.value(), count++});
