@@ -13,11 +13,15 @@ public class Listener {
     private static final Logger log = LogManager.getLogger(Listener.class);
 
     int count = new AtomicInteger().incrementAndGet();
-    // @KafkaListener(topics = "${kafka-topic}")
 
 
-    @KafkaListener(topics = "#{'${kafka-topic}'.split(',')}")
+    // @KafkaListener(topics = "${kafka-topic}") -> Use this when consuming from a single topic
+
+    @KafkaListener(topics = "#{'${kafka-topic}'.split(',')}") // -> Use this when cnsuming from multiple topics
     public void consume(ConsumerRecord<String, String> record){
+
+        // Your Business logic goes here. The `record` object represents a message consumed from Kafka.
+        // You can choose to do anything on it, write the record to a db, filter, enrich it.......
 
         log.info("Message received -> Timestamp: {}, key: {}, Value: {}, Record Count: {}", new Object[]{record.timestamp(), record.key(), record.value(), count++});
 
