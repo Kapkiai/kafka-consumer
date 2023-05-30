@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 public class Listener {
     private static final Logger log = LogManager.getLogger(Listener.class);
 
-    int count = new AtomicInteger().incrementAndGet();
+    AtomicInteger count = new AtomicInteger();
 
 
     // @KafkaListener(topics = "${kafka-topic}") -> Use this when consuming from a single topic
@@ -23,7 +23,7 @@ public class Listener {
         // Your Business logic goes here. The `record` object represents a message consumed from Kafka.
         // You can choose to do anything on it, write the record to a db, filter, enrich it.......
 
-        log.info("Message received -> Timestamp: {}, key: {}, Value: {}, Record Count: {}", new Object[]{record.timestamp(), record.key(), record.value(), count++});
+        log.info("Message received -> Timestamp: {}, key: {}, Value: {}, Record Count: {}", new Object[]{record.timestamp(), record.key(), record.value(), count.incrementAndGet()});
 
     }
     
