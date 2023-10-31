@@ -26,6 +26,8 @@ public class Listener {
     private KafkaTemplate<String, String> kafkaTemplate;
     @Value("${kafka.producer.topics}")
     private String topicName;
+    @Value("${kafka.producer.publish:false}")
+    private Boolean shouldPublish;
 
 
     // @KafkaListener(topics = "${kafka-topic}") -> Use this when consuming from a single topic
@@ -38,7 +40,9 @@ public class Listener {
 
         log.info("Message received -> Timestamp: {}, key: {}, Value: {}, Record Count: {}", new Object[]{record.timestamp(), record.key(), record.value(), count.incrementAndGet()});
 
-        produce(record.value());
+        if (shouldPublish) {
+            produce(record.value());
+        }
 
     }
 
