@@ -24,7 +24,7 @@ public class Listener {
 
     @Autowired
     private KafkaTemplate<String, String> kafkaTemplate;
-    @Value("${kafka.producer.topics}")
+    @Value("${kafka.producer.topics:Test}")
     private String topicName;
     @Value("${kafka.producer.publish:false}")
     private Boolean shouldPublish;
@@ -32,7 +32,7 @@ public class Listener {
 
     // @KafkaListener(topics = "${kafka-topic}") -> Use this when consuming from a single topic
 
-    @KafkaListener(topics = "#{'${kafka.consumer.topics}'.split(',')}") // -> Use this when cnsuming from multiple topics
+    @KafkaListener(topics = "#{'${kafka.consumer.topics:test}'.split(',')}") // -> Use this when cnsuming from multiple topics
     public void consume(ConsumerRecord<String, String> record){
 
         // Your Business logic goes here. The `record` object represents a message consumed from Kafka.
